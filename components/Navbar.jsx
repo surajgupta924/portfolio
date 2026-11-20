@@ -2,6 +2,7 @@ import { useSite } from '../lib/siteContext';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { FaBriefcase, FaCode, FaEnvelope, FaFolderOpen, FaHome, FaUser, FaCogs } from 'react-icons/fa';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -10,13 +11,13 @@ export default function Navbar() {
   const navigation = content.navigation;
 
   const links = [
-    { href: '/', label: navigation.homeLabel },
-    { href: '/about', label: navigation.aboutLabel },
-    { href: '/services', label: navigation.servicesLabel },
-    { href: '/skills', label: navigation.skillsLabel },
-    { href: '/experience', label: navigation.experienceLabel },
-    { href: '/projects', label: navigation.projectsLabel },
-    { href: '/contact', label: navigation.contactLabel },
+    { href: '/', label: navigation.homeLabel, icon: FaHome },
+    { href: '/about', label: navigation.aboutLabel, icon: FaUser },
+    { href: '/services', label: navigation.servicesLabel, icon: FaCogs },
+    { href: '/skills', label: navigation.skillsLabel, icon: FaCode },
+    { href: '/experience', label: navigation.experienceLabel, icon: FaBriefcase },
+    { href: '/projects', label: navigation.projectsLabel, icon: FaFolderOpen },
+    { href: '/contact', label: navigation.contactLabel, icon: FaEnvelope },
   ];
 
   const isActive = (href) => router.pathname === href;
@@ -35,8 +36,7 @@ export default function Navbar() {
             <li key={link.href}>
               <Link
                 href={link.href}
-                onMouseEnter={() => router.prefetch(link.href)}
-                onFocus={() => router.prefetch(link.href)}
+                prefetch
                 className={`rounded-lg px-3 py-2 text-sm transition-colors ${
                   isActive(link.href)
                     ? 'bg-slate-800/60 text-slate-50'
@@ -61,10 +61,12 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="lg:hidden text-slate-300 hover:text-white"
+          type="button"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-700/70 text-slate-300 transition-colors hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 lg:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
           aria-expanded={mobileOpen}
+          aria-controls="mobile-navigation"
         >
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             {mobileOpen ? (
@@ -78,17 +80,18 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden border-t border-slate-800/40 bg-slate-950/95 backdrop-blur-md px-4 pb-4">
+        <div id="mobile-navigation" className="lg:hidden border-t border-slate-800/40 bg-slate-950/95 px-4 pb-4 backdrop-blur-md">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              onTouchStart={() => router.prefetch(link.href)}
+              prefetch
               onClick={() => setMobileOpen(false)}
-              className={`block rounded-lg px-3 py-2.5 text-sm transition-colors ${
+              className={`flex items-center rounded-lg px-3 py-2.5 text-sm transition-colors ${
                 isActive(link.href) ? 'bg-slate-800/60 text-white' : 'text-slate-300 hover:bg-slate-800/50'
               }`}
             >
+              <link.icon aria-hidden="true" className="mr-3 h-4 w-4 shrink-0 text-blue-400" />
               {link.label}
             </Link>
           ))}

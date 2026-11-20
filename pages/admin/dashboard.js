@@ -180,6 +180,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (siteInfo) {
+      // The form keeps an editable draft synchronized with asynchronously loaded profile data.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSiteForm({
         name: siteInfo.name || '',
         tagline: siteInfo.tagline || '',

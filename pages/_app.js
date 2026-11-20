@@ -25,21 +25,6 @@ export default function App({ Component, pageProps }) {
     };
   }, [router]);
 
-  useEffect(() => {
-    if (process.env.NODE_ENV !== 'production') return undefined;
-
-    const routes = ['/about', '/services', '/skills', '/experience', '/projects', '/contact'];
-    const warmRoutes = () => routes.forEach((route) => router.prefetch(route));
-    const idleWindow = window;
-    if ('requestIdleCallback' in idleWindow) {
-      const idleId = idleWindow.requestIdleCallback(warmRoutes, { timeout: 1200 });
-      return () => idleWindow.cancelIdleCallback(idleId);
-    }
-
-    const timeoutId = window.setTimeout(warmRoutes, 350);
-    return () => window.clearTimeout(timeoutId);
-  }, [router]);
-
   if (!pageProps.page) {
     if (Component.adminPage) {
       return <AdminProviders><Component {...pageProps} /></AdminProviders>;

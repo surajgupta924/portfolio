@@ -25,3 +25,14 @@ A fresh clone starts with the bundled portfolio content. File storage saves chan
 ## Use MongoDB
 
 For a shared or hosted setup, set `PORTFOLIO_STORAGE=mongo` and fill in `MONGODB_URI`. If the database has no admin account for your email, run `npm run admin:create` once from the project directory with `ADMIN_EMAIL` and `ADMIN_PASSWORD` set. This command requires a password of at least 12 characters. The app reads saved content and admin accounts from the database. To access the same portfolio from a second system, configure it to connect to that database.
+
+## Deploy to Vercel
+
+Import the project into Vercel and set these environment variables for Production:
+
+- `PORTFOLIO_STORAGE=mongo`
+- `MONGODB_URI` with the MongoDB connection string
+- `NEXTAUTH_SECRET` with a newly generated random secret
+- `NEXTAUTH_URL` with the deployed HTTPS origin
+
+Create the admin account once before signing in by running `npm run admin:create` locally with `MONGODB_URI`, `ADMIN_EMAIL`, and a unique `ADMIN_PASSWORD` of at least 12 characters in `.env.local`. Do not commit environment files or put database credentials in source code. Deploy after the environment variables are configured.
